@@ -32,42 +32,72 @@ FOREIGN KEY(cnum) REFERENCES Cruise(cnum) ON DELETE CASCADE);
 CREATE TABLE Crew(name CHAR[10], ID INT NOT NULL, 
 PRIMARY KEY (ID));
 
-CREATE TABLE Schedule(c-num INT NOT NULL, day CHAR[10], depart_time CHAR[10], arrive_time CHAR[10],
-PRIMARY KEY (c-num));
+CREATE TABLE Schedule(cnum INT NOT NULL, day CHAR[10], depart_time CHAR[10], arrive_time CHAR[10],
+PRIMARY KEY (cnum));
 
-CREATE TABLE Cruise[c-num INT NOT NULL, cost INT NOT NULL, num_sold INT NOT NULL, num_stops INT NOT NULL, actual_arrive_date CHAR[10], actual_arrive_time CHAR[10], actual_depart_date CHAR[10], actual_depart_time CHAR[10], source CHAR[10], destination CHAR[10],
-PRIMARY KEY (c-num));
+CREATE TABLE Cruise[cnum INT NOT NULL, cost INT NOT NULL, num_sold INT NOT NULL, num_stops INT NOT NULL, actual_arrive_date CHAR[10], actual_arrive_time CHAR[10], actual_depart_date CHAR[10], actual_depart_time CHAR[10], source CHAR[10], destination CHAR[10],
+PRIMARY KEY (cnum));
 
 CREATE TABLE Works(w-num INT NOT NULL, wID NOT NULL,
 PRIMARY KEY (w-num, wID),
-FOREIGN KEY (w-num) REFERENCES Cruise(c-num) ON DELETE CASCADE,
+FOREIGN KEY (w-num) REFERENCES Cruise(cnum) ON DELETE CASCADE,
 FOREIGN KEY (wID) REFERENCES Crew(ID) ON DELETE CASCADE);
 
 CREATE TABLE CruiseReservation(Rnum INT NOT NULL, c-num INT NOT NULL, 
-PRIMARY KEY(Rnum,c-num),
+PRIMARY KEY(Rnum,cnum),
 FOREIGN KEY (Rnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE,
-FOREIGN KEY (c-num) REFERENCES Cruise(c-num) ON DELETE CASCADE); 
+FOREIGN KEY (cnum) REFERENCES Cruise(c-num) ON DELETE CASCADE); 
 
 CREATE TABLE CruiseCustomer(CID INT NOT NULL, c-num INT NOT NULL,
-PRIMARY KEY(CID,c-num),
+PRIMARY KEY(CID,cnum),
 FOREIGN KEY (CID) REFERENCES Customer(ID) ON DELETE CASCADE,
-FOREIGN KEY (c-num) REFERENCES Cruise(c-num) ON DELETE CASCADE);
+FOREIGN KEY (c-num) REFERENCES Cruise(cnum) ON DELETE CASCADE);
 
-CREATE TABLE Waitlist(Wnum INT NOT NULL, 
-PRIMARY KEY (Wnum),
-FOREIGN KEY (Wnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
+CREATE TABLE Waitlist (W_Rnum INT NOT NULL,
+PRIMARY KEY (W_Rnum),
+FOREIGN KEY (W_Rnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
 
-CREATE TABLE Confirm(Cnum INT NOT NULL,
-PRIMARY KEY (Cnum),
-FOREIGN KEY (Cnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
+CREATE TABLE Confirmed (C_Rnum INT NOT NULL,
+PRIMARY KEY (C_Rnum),
+FOREIGN KEY (C_Rnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
 
-CREATE TABLE Reserved(Resnum INT NOT NULL,
-PRIMARY KEY (Resnum),
-FOREIGN KEY (Resnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
+CREATE TABLE Reserved (W_Rnum INT NOT NULL,
+PRIMARY KEY (R_Rnum),
+FOREIGN KEY (R_Rnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
 
+CREATE TABLE Technician(ID INT NOT NULL,
+PRIMARY KEY (ID));
 
+CREATE TABLE request (ID INT NOT NULL, CID INT NOT NULL, SID INT NOT NULL,
+PRIMARY KEY (ID),
+FOREIGN KEY(CID) REFERENCES Captain(ID)
+FOREIGN KEY(SID) REFERENCES Ship(ID));
 
+CREATE TABLE repairs(r_date CHAR[10], code INT NOT NULL, SID INT NOT NULL, TID INT NOT NULL
+PRIMARY KEY (SID, TID),
+FORIEGN KEY (SID) REFERENCES Ship,
+FOREIGN KEY (TID) REFERENCES Technician);
 
+CREATE TABLE CruiseSchedule(cnum INT NOT NULL, cnum INT NOT NULL, 
+PRIMARY KEY (cnum, scnum),
+FOREIGN KEY (cnum) REFERENCES Cruise(cnum),
+FOREIGN KEY (scnum) REFERENCES Schedule(cnum)ON DELETE CASCADE);
+                                 
+CREATE TABLE CruiseCaptain(cnum INT NOT NULL, CID INT NOT NULL, 
+PRIMARY KEY (cnum, CID),
+FOREIGN KEY (cnum) REFERENCES Cruise(cnum),
+FOREIGN KEY (CID) REFERENCES Captain(ID)ON DELETE CASCADE);
+
+CREATE TABLE CruiseShip(cnum INT NOT NULL, SID INT NOT NULL, 
+PRIMARY KEY (cnum, SID),
+FOREIGN KEY (cnum) REFERENCES Cruise(cnum),
+FOREIGN KEY (SID) REFERENCES Ship(ID)ON DELETE CASCADE);
+                                 
+CREATE TABLE CruiseCrew(cnum INT NOT NULL, CID2 INT NOT NULL, 
+PRIMARY KEY (cnum, CID2),
+FOREIGN KEY (cnum) REFERENCES Cruise(cnum),
+FOREIGN KEY (CID2) REFERENCES Customer(ID)ON DELETE CASCADE);
+                                 
 
 
 
