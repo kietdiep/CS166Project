@@ -29,6 +29,58 @@ address CHAR[64] NOT NULL, contact_num INT NOT NULL, ID INT NOT NULL, Zip_code I
 PRIMARY KEY (ID), 
 FOREIGN KEY(cnum) REFERENCES Cruise(cnum) ON DELETE CASCADE);
 
+CREATE TABLE Crew(name CHAR[10], ID INT NOT NULL, 
+PRIMARY KEY (ID));
+
+CREATE TABLE Schedule(c-num INT NOT NULL, day CHAR[10], depart_time CHAR[10], arrive_time CHAR[10],
+PRIMARY KEY (c-num));
+
+CREATE TABLE Cruise[c-num INT NOT NULL, cost INT NOT NULL, num_sold INT NOT NULL, num_stops INT NOT NULL, actual_arrive_date CHAR[10], actual_arrive_time CHAR[10], actual_depart_date CHAR[10], actual_depart_time CHAR[10], source CHAR[10], destination CHAR[10],
+PRIMARY KEY (c-num));
+
+CREATE TABLE Works(w-num INT NOT NULL, wID NOT NULL,
+PRIMARY KEY (w-num, wID),
+FOREIGN KEY (w-num) REFERENCES Cruise(c-num) ON DELETE CASCADE,
+FOREIGN KEY (wID) REFERENCES Crew(ID) ON DELETE CASCADE);
+
+CREATE TABLE CruiseReservation(Rnum INT NOT NULL, c-num INT NOT NULL, 
+PRIMARY KEY(Rnum,c-num),
+FOREIGN KEY (Rnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE,
+FOREIGN KEY (c-num) REFERENCES Cruise(c-num) ON DELETE CASCADE); 
+
+CREATE TABLE CruiseCustomer(CID INT NOT NULL, c-num INT NOT NULL,
+PRIMARY KEY(CID,c-num),
+FOREIGN KEY (CID) REFERENCES Customer(ID) ON DELETE CASCADE,
+FOREIGN KEY (c-num) REFERENCES Cruise(c-num) ON DELETE CASCADE);
+
+CREATE TABLE Waitlist(Wnum INT NOT NULL, 
+PRIMARY KEY (Wnum),
+FOREIGN KEY (Wnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
+
+CREATE TABLE Confirm(Cnum INT NOT NULL,
+PRIMARY KEY (Cnum),
+FOREIGN KEY (Cnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
+
+CREATE TABLE Reserved(Resnum INT NOT NULL,
+PRIMARY KEY (Resnum),
+FOREIGN KEY (Resnum) REFERENCES Reservation(Rnum) ON DELETE CASCADE);
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
 
 
 
